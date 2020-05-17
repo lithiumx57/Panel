@@ -1,0 +1,265 @@
+<?php
+
+namespace App\Models;
+
+use App\Panel\LiModel;
+use Illuminate\Database\Eloquent\Model;
+
+class Permission extends Model
+{
+  protected $fillable = ['label', 'name', 'parent'];
+
+  public $timestamps = false;
+
+  protected $casts = [
+    'crud' => "array"
+  ];
+
+
+
+  private const PERMISSIONS = [
+    ['name' => "categories-access", 'label' => "دسته بندی ها",
+      "crud" => [
+        ['name' => 'view-category', 'label' => 'مشاهده'],
+        ['name' => 'post-category', 'label' => 'ایجاد'],
+        ['name' => 'patch-category', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-category', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "slides-access", 'label' => "اسلاید ها",
+      "crud" => [
+        ['name' => 'view-slide', 'label' => 'مشاهده'],
+        ['name' => 'post-slide', 'label' => 'ایجاد'],
+        ['name' => 'patch-slide', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-slide', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "main-page-access", 'label' => "مدیریت صفحه اصلی",
+      "crud" => [
+        ['name' => 'view-mainPage', 'label' => 'مشاهده'],
+        ['name' => 'post-mainPage', 'label' => 'ایجاد'],
+        ['name' => 'patch-mainPage', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-mainPage', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "stores-access", 'label' => "فورشگاه ها",
+      "crud" => [
+        ['name' => 'view-store', 'label' => 'مشاهده'],
+        ['name' => 'patch-store', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-store', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "states-access", 'label' => "استان های مجاز",
+      "crud" => [
+        ['name' => 'view-state', 'label' => 'مشاهده'],
+        ['name' => 'post-state', 'label' => 'ایجاد'],
+        ['name' => 'patch-state', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-state', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "cities-access", 'label' => "شهر های مجاز",
+      "crud" => [
+        ['name' => 'view-city', 'label' => 'مشاهده'],
+        ['name' => 'post-city', 'label' => 'ایجاد'],
+        ['name' => 'patch-city', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-city', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "attributes-access", 'label' => "صفت ها",
+      "crud" => [
+        ['name' => 'view-attribute', 'label' => 'مشاهده'],
+        ['name' => 'post-attribute', 'label' => 'ایجاد'],
+        ['name' => 'patch-attribute', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-attribute', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "users-access", 'label' => "کاربر ها",
+      "crud" => [
+        ['name' => 'view-user', 'label' => 'مشاهده'],
+        ['name' => 'post-user', 'label' => 'ایجاد'],
+        ['name' => 'patch-user', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-user', 'label' => 'حذف '],
+        ['name' => 'put-user', 'label' => 'تغییر دسترسی ها']
+      ]
+    ],
+
+
+    ['name' => "store-access", 'label' => "فروشگاه ها",
+      "crud" => [
+        ['name' => 'view-seller', 'label' => 'مشاهده'],
+        ['name' => 'post-seller', 'label' => 'ایجاد'],
+        ['name' => 'patch-seller', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-seller', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "filters-access", 'label' => "فیلتر ها",
+      "crud" => [
+        ['name' => 'view-filter', 'label' => 'مشاهده'],
+        ['name' => 'post-filter', 'label' => 'ایجاد'],
+        ['name' => 'patch-filter', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-filter', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "products-access", 'label' => "محصولات",
+      "crud" => [
+        ['name' => 'view-product', 'label' => 'مشاهده'],
+        ['name' => 'post-product', 'label' => 'ایجاد'],
+        ['name' => 'patch-product', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-product', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "comments-access", 'label' => "کامنت ها",
+      "crud" => [
+        ['name' => 'view-comment', 'label' => 'مشاهده'],
+        ['name' => 'patch-comment', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-comment', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "guarantees-access", 'label' => "گارانتی ها",
+      "crud" => [
+        ['name' => 'view-guarantee', 'label' => 'مشاهده'],
+        ['name' => 'post-guarantee', 'label' => 'ایجاد'],
+        ['name' => 'patch-guarantee', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-guarantee', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "colors-access", 'label' => "رنگ ها",
+      "crud" => [
+        ['name' => 'view-color', 'label' => 'مشاهده'],
+        ['name' => 'post-color', 'label' => 'ایجاد'],
+        ['name' => 'patch-color', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-color', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "filters-access", 'label' => "فیلتر ها",
+      "crud" => [
+        ['name' => 'view-filter', 'label' => 'مشاهده'],
+        ['name' => 'post-filter', 'label' => 'ایجاد'],
+        ['name' => 'patch-filter', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-filter', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "commentRates-access", 'label' => "امتیاز دهی کامنت ها",
+      "crud" => [
+        ['name' => 'view-commentRate', 'label' => 'مشاهده'],
+        ['name' => 'post-commentRate', 'label' => 'ایجاد'],
+        ['name' => 'patch-commentRate', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-commentRate', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "roles-access", 'label' => "سطوح دسترسی",
+      "crud" => [
+        ['name' => 'view-role', 'label' => 'مشاهده'],
+        ['name' => 'post-role', 'label' => 'ایجاد'],
+        ['name' => 'patch-role', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-role', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "installments-access", 'label' => "اقساط",
+      "crud" => [
+        ['name' => 'view-installment', 'label' => 'مشاهده'],
+        ['name' => 'post-installment', 'label' => 'ایجاد'],
+        ['name' => 'patch-installment', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-installment', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "footers-access", 'label' => "فوتر",
+      "crud" => [
+        ['name' => 'view-footer', 'label' => 'مشاهده'],
+        ['name' => 'post-footer', 'label' => 'ایجاد'],
+        ['name' => 'patch-footer', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-footer', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "faqs-access", 'label' => "قوانین و مقررات",
+      "crud" => [
+        ['name' => 'view-faq', 'label' => 'مشاهده'],
+        ['name' => 'post-faq', 'label' => 'ایجاد'],
+        ['name' => 'patch-faq', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-faq', 'label' => 'حذف ']
+      ]
+    ],
+
+    ['name' => "reflections-access", 'label' => "بازخورد ها",
+      "crud" => [
+        ['name' => 'view-reflection', 'label' => 'مشاهده'],
+        ['name' => 'post-reflection', 'label' => 'ایجاد'],
+        ['name' => 'patch-reflection', 'label' => 'به روز رسانی'],
+        ['name' => 'delete-reflection', 'label' => 'حذف ']
+      ]
+    ],
+
+
+    ['name' => "texts-access", 'label' => "متن ها",
+      "crud" => [
+        ['name' => 'view-text', 'label' => 'مشاهده'],
+        ['name' => 'post-text', 'label' => 'ویرایش'],
+      ]
+    ],
+  ];
+
+
+  public static function getPermissions()
+  {
+    self::releasePermissions();
+    return static::all();
+  }
+
+
+  private static function releasePermissions()
+  {
+    foreach (self::PERMISSIONS as $permission) {
+      $result = static::where("name", $permission['name'])->first();
+      if (!($result instanceof Permission)) {
+        $p = Permission::create([
+          'name' => $permission['name'],
+          'label' => $permission['label'],
+        ]);
+
+        if ($p instanceof Permission && isset($permission['crud']) && is_array($permission['crud'])) {
+          foreach ($permission['crud'] as $row) {
+
+            Permission::create([
+              'name' => $row['name'],
+              'label' => $row['label'],
+              'parent' => $p->id,
+            ]);
+          }
+        }
+      }
+    }
+  }
+
+  public function roles()
+  {
+    return $this->belongsToMany(Role::class);
+  }
+}

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use App\Panel\LiModel;
+
+class Role extends LiModel
+{
+  protected $title = "سطح دسترسی";
+  protected $pluralTitle = "سطوح دسترسی";
+
+
+  protected function fields(): array
+  {
+    return [
+      xString('name', [label('نام')]),
+      xText('description', [nullable(), label('توضیحات ( غیر الزامی )')]),
+      xPermissions("permissions"),
+    ];
+  }
+}
