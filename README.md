@@ -15,3 +15,4 @@ And finally in the file web.php run the function AdminDynamicModels::initialize(
       )
     ];
   }
+
