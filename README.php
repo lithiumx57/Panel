@@ -16,3 +16,4 @@ And finally in the file web.php run the function AdminDynamicModels::initialize(
     ];
   }
 
+composer require lithiumx57/xpanel
